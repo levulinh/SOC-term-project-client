@@ -1,0 +1,3 @@
+[submodule "server"]
+	path = server
+	url = https://github.com/levulinh/SOC-Term-project-server.git

@@ -9,7 +9,7 @@ import {
   Segment,
   Icon
 } from "semantic-ui-react";
-import { AUTH_TOKEN } from "../constants";
+import { AUTH_TOKEN, USER_INFO } from "../constants";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { Link } from "react-router-dom";
@@ -20,6 +20,10 @@ const LOGIN_MUTATION = gql`
   mutation LoginMutaion($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
+      user {
+        email
+        name
+      }
     }
   }
 `;
@@ -33,7 +37,7 @@ class LoginForm extends Component {
   };
 
   render() {
-    const { login, email, password, name } = this.state;
+    const { email, password } = this.state;
     return (
       <Grid
         textAlign="center"
@@ -43,13 +47,7 @@ class LoginForm extends Component {
         <Grid.Column style={{ maxWidth: 600 }}>
           <Segment.Group raised>
             <Segment textAlign="center">
-              <Icon
-                circular
-                inverted
-                color="teal"
-                name="american sign language interpreting"
-                size="large"
-              />
+              <Icon circular inverted color="blue" name="fire" size="large" />
               <Header
                 as="h2"
                 textAlign="center"
@@ -117,18 +115,18 @@ class LoginForm extends Component {
   }
 
   _confirm = async data => {
-    const { token } = data.signup;
-    this._saveUserData(token);
-    // this.props.history.push(`/`)
-    console.log({ token });
+    const { token, user } = data.login;
+    this._saveUserData(token, user);
+    this.props.history.push(`/`);
   };
 
-  _saveUserData = token => {
+  _saveUserData = (token, user) => {
     localStorage.setItem(AUTH_TOKEN, token);
+    localStorage.setItem(USER_INFO, JSON.stringify(user));
   };
 
   _handleError = error => {
-    this.setState({error: true})
+    this.setState({ error: true });
   };
 }
 

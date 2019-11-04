@@ -1,21 +1,53 @@
-import React from 'react';
-import logo from '../logo.svg';
-import '../styles/App.css';
+import React, { Component } from "react";
+import "../styles/App.css";
 
-import LoginForm from './Login'
-import SignupForm from './Signup'
+import { isAuthenticated } from "../utils";
+import LoginForm from "./Login";
+import SignupForm from "./Signup";
+import Home from "./Home";
+import PageNotFound from "./PageNotFound";
 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from "react-router-dom";
 
-function App() {
-  return (
-    <div>
-      <Switch>
-        <Route exact path="/login" component={LoginForm} />
-        <Route exact path="/signup" component={SignupForm} />
-      </Switch>
-    </div>
-  );
+const AuthenticatedRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      isAuthenticated() === true ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to="/login" />
+      )
+    }
+  />
+);
+
+const UnauthenticatedRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      isAuthenticated() === false ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to="/" />
+      )
+    }
+  />
+);
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <Switch>
+          <UnauthenticatedRoute exact path="/login" component={LoginForm} />
+          <UnauthenticatedRoute exact path="/signup" component={SignupForm} />
+          <AuthenticatedRoute exact path="/" component={Home} />
+          <Route component={PageNotFound} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;

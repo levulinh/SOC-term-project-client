@@ -26,14 +26,14 @@ const SIGNUP_MUTATION = gql`
 
 class SignupForm extends Component {
   state = {
-      error: false,
+    error: false,
     email: "",
     password: "",
     name: ""
   };
 
   render() {
-    const { login, email, password, name } = this.state;
+    const { email, password, name } = this.state;
     return (
       <Grid
         textAlign="center"
@@ -41,80 +41,76 @@ class SignupForm extends Component {
         verticalAlign="middle"
       >
         <Grid.Column style={{ maxWidth: 600 }}>
-        <Segment.Group raised>
+          <Segment.Group raised>
             <Segment textAlign="center">
-            <Icon
-              circular
-              inverted
-              color="teal"
-              name="american sign language interpreting"
-              size="large"
-            />
-            <Header
-              as="h2"
-              textAlign="center"
-              style={{ marginBottom: 50, marginTop: 10 }}
-            >
-              Join Friends
-            </Header>
-            <Form
-              size="large"
-              style={{ marginBottom: 50, paddingLeft: 50, paddingRight: 50 }}
-            >
-              <Form.Input
-                fluid
-                icon="user"
-                iconPosition="left"
-                placeholder="Your name"
-                onChange={e => this.setState({ name: e.target.value })}
-              />
-              <Form.Input
-                fluid
-                icon="at"
-                iconPosition="left"
-                placeholder="E-mail address"
-                onChange={e => this.setState({ email: e.target.value })}
-              />
-              <Form.Input
-                fluid
-                icon="lock"
-                iconPosition="left"
-                placeholder="Password"
-                type="password"
-                onChange={e => this.setState({ password: e.target.value })}
-              />
-
-              <Mutation
-                mutation={SIGNUP_MUTATION}
-                variables={{ email, password, name }}
-                onCompleted={data => this._confirm(data)}
-                onError={error => this._handleError(error)}
+              <Icon circular inverted color="blue" name="fire" size="large" />
+              <Header
+                as="h2"
+                textAlign="center"
+                style={{ marginBottom: 50, marginTop: 10 }}
               >
-                {mutation => (
-                  <Button
-                    icon
-                    labelPosition="left"
-                    size="large"
-                    color="blue"
-                    onClick={mutation}
-                  >
-                    <Icon name="send" />
-                    Sign up
-                  </Button>
-                )}
-              </Mutation>
-            </Form>
-            {this.state.error && (
+                Join Friends
+              </Header>
+              <Form
+                size="large"
+                style={{ marginBottom: 50, paddingLeft: 50, paddingRight: 50 }}
+              >
+                <Form.Input
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="Your name"
+                  onChange={e => this.setState({ name: e.target.value })}
+                />
+                <Form.Input
+                  fluid
+                  icon="at"
+                  iconPosition="left"
+                  placeholder="E-mail address"
+                  onChange={e => this.setState({ email: e.target.value })}
+                />
+                <Form.Input
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Password"
+                  type="password"
+                  onChange={e => this.setState({ password: e.target.value })}
+                />
+
+                <Mutation
+                  mutation={SIGNUP_MUTATION}
+                  variables={{ email, password, name }}
+                  onCompleted={data => this._confirm(data)}
+                  onError={error => this._handleError(error)}
+                >
+                  {mutation => (
+                    <Button
+                      icon
+                      labelPosition="left"
+                      size="large"
+                      color="blue"
+                      onClick={mutation}
+                    >
+                      <Icon name="send" />
+                      Sign up
+                    </Button>
+                  )}
+                </Mutation>
+              </Form>
+              {this.state.error && (
                 <Message negative>
-                  <Message.Header>Sorry we can't create your account!</Message.Header>
+                  <Message.Header>
+                    Sorry we can't create your account!
+                  </Message.Header>
                   <p>
                     Some problems occured. Please check your email or password.
                   </p>
                 </Message>
               )}
-          </Segment>
+            </Segment>
 
-          <Segment>
+            <Segment>
               Already joined Friends? <Link to="/login">Login now»</Link>
             </Segment>
           </Segment.Group>
@@ -124,9 +120,9 @@ class SignupForm extends Component {
   }
 
   _confirm = async data => {
-    const { token } = data.login;
+    const { token } = data.signup;
     this._saveUserData(token);
-    // this.props.history.push(`/`)
+    this.props.history.push(`/`);
     console.log({ token });
   };
 
@@ -135,7 +131,7 @@ class SignupForm extends Component {
   };
 
   _handleError = error => {
-    this.setState({error: true})
+    this.setState({ error: true });
   };
 }
 

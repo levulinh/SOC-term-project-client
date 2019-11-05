@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Menu,
-  Icon,
-  Button,
-  Header,
-  Container,
-  Dropdown,
-  Search
-} from "semantic-ui-react";
+import { Menu, Icon, Header, Container, Dropdown } from "semantic-ui-react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { AUTH_TOKEN } from "../constants";
@@ -21,7 +13,6 @@ class HeaderMenu extends Component {
     value: ""
   };
   render() {
-    const { isLoading, value, results } = this.state;
     return (
       <Menu borderless>
         <Container>

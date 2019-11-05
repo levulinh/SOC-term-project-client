@@ -1,15 +1,9 @@
 import PropTypes from "prop-types";
-import _ from "lodash";
-import faker from "faker";
 import React, { Component } from "react";
+import _ from "lodash";
 import { Search } from "semantic-ui-react";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
-
-let source = _.times(10, () => ({
-  name: faker.name.findName(),
-  email: faker.internet.email()
-}));
+import { withApollo } from "react-apollo";
 
 const SEARCH_QUERY = gql`
   query UserSearch($filter: String, $first: Int) {
@@ -28,30 +22,32 @@ const resultRenderer = ({ name }) => <b>{name}</b>;
 
 resultRenderer.propTypes = {
   name: PropTypes.string,
-  name: PropTypes.string
+  email: PropTypes.string
 };
 
 const initialState = { isLoading: false, results: [], value: "" };
 
-export default class SearchExampleStandard extends Component {
+class SearchExampleStandard extends Component {
   state = initialState;
 
   handleResultSelect = (e, { result }) => this.setState({ value: result.name });
 
-  handleSearchChange = (e, { value }) => {
+  handleSearchChange = async (e, { value }) => {
     this.setState({ isLoading: true, value });
 
-    useQuery;
+    const { data } = await this.props.client.query({
+      query: SEARCH_QUERY,
+      variables: { filter: value, first: 10 }
+    });
+
+    if (data) console.log(data);
 
     setTimeout(() => {
       if (this.state.value.length < 1) return this.setState(initialState);
 
-      const re = new RegExp(_.escapeRegExp(this.state.value), "i");
-      const isMatch = result => re.test(result.name);
-
       this.setState({
         isLoading: false,
-        results: _.filter(source, isMatch)
+        results: data.users.users
       });
     }, 300);
   };
@@ -69,8 +65,13 @@ export default class SearchExampleStandard extends Component {
         results={results}
         value={value}
         resultRenderer={resultRenderer}
+        placeholder="Input to search"
+        noResultsMessage="No user found"
+        noResultsDescription="Try @username or email"
         {...this.props}
       />
     );
   }
 }
+
+export default withApollo(SearchExampleStandard);

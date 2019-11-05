@@ -12,6 +12,7 @@ import { AUTH_TOKEN, USER_INFO } from "../constants";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { Link } from "react-router-dom";
+import { CURRENT_QUERY } from "./Leftbar";
 
 import "../styles/Login.css";
 
@@ -20,8 +21,12 @@ const LOGIN_MUTATION = gql`
     login(email: $email, password: $password) {
       token
       user {
+        id
         email
         name
+        username
+        gender
+        moto
       }
     }
   }
@@ -79,6 +84,9 @@ class LoginForm extends Component {
                   variables={{ email, password }}
                   onCompleted={data => this._confirm(data)}
                   onError={error => this._handleError(error)}
+                  update={(store, { data: { login } }) =>
+                    this._updateStoreAfterLogin(store, login, email)
+                  }
                 >
                   {mutation => (
                     <Button
@@ -116,7 +124,6 @@ class LoginForm extends Component {
   _confirm = async data => {
     const { token, user } = data.login;
     this._saveUserData(token, user);
-    this.props.history.push(`/`);
   };
 
   _saveUserData = (token, user) => {
@@ -126,6 +133,25 @@ class LoginForm extends Component {
 
   _handleError = error => {
     this.setState({ error: true });
+  };
+
+  _updateStoreAfterLogin = (store, login, email) => {
+    const data = store.readQuery({
+      query: CURRENT_QUERY,
+      variables: { email }
+    });
+
+    let userToUpdate = data.user;
+    userToUpdate.user = login.user;
+
+    // console.log(data);
+
+    store.writeQuery({ query: CURRENT_QUERY, variables: { email }, data });
+    // const datanew = store.readQuery({
+    //   query: CURRENT_QUERY,
+    //   variables: { email }
+    // });
+    // console.log(datanew);
   };
 }
 

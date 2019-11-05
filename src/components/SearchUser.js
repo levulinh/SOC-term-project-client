@@ -35,21 +35,18 @@ class SearchExampleStandard extends Component {
   handleSearchChange = async (e, { value }) => {
     this.setState({ isLoading: true, value });
 
-    const { data } = await this.props.client.query({
+    const { loading, error, data } = await this.props.client.query({
       query: SEARCH_QUERY,
       variables: { filter: value, first: 10 }
     });
 
-    if (data) console.log(data);
-
-    setTimeout(() => {
+    if (!loading && data) {
       if (this.state.value.length < 1) return this.setState(initialState);
-
       this.setState({
         isLoading: false,
         results: data.users.users
       });
-    }, 300);
+    }
   };
 
   render() {

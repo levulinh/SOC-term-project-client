@@ -124,6 +124,7 @@ class LoginForm extends Component {
   _confirm = async data => {
     const { token, user } = data.login;
     this._saveUserData(token, user);
+    window.location = "http://localhost:3000/"
   };
 
   _saveUserData = (token, user) => {

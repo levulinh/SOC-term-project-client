@@ -70,7 +70,7 @@ class Leftbar extends Component {
                     <Placeholder.Line length="short" />
                   </Placeholder>
                 ) : (
-                  <a>
+                  <a href='/#'>
                     <Icon name="at" />
                     {user.username}
                   </a>

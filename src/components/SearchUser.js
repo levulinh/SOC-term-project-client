@@ -40,7 +40,7 @@ class SearchExampleStandard extends Component {
       variables: { filter: value, first: 10 }
     });
 
-    if (!loading && data) {
+    if (!loading && !error) {
       if (this.state.value.length < 1) return this.setState(initialState);
       this.setState({
         isLoading: false,

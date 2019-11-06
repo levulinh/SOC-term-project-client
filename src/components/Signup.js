@@ -13,7 +13,7 @@ import {
 import { AUTH_TOKEN, USER_INFO } from "../constants";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "../styles/Login.css";
 
@@ -180,7 +180,8 @@ class SignupForm extends Component {
   _confirm = async data => {
     const { token, user } = data.signup;
     this._saveUserData(token, user);
-    this.props.history.push(`/`);
+    window.location = 'http://localhost:3000/'
+    // this.props.history.push(`/`);
     // console.log({ token });
   };
 

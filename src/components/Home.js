@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import HeaderMenu from "./Header";
 import { Container, Grid } from "semantic-ui-react";
 import Leftbar from "./Leftbar";
+import Rightbar from "./Rightbar";
 
 class Home extends Component {
   render() {
@@ -10,11 +11,13 @@ class Home extends Component {
       <div>
         <HeaderMenu feed={true} />
         <Container>
-          <Grid>
-            <Grid.Column width={4}>
-              <Leftbar reload />
+          <Grid columns='equal'>
+            <Grid.Column width={5}>
+              <Leftbar />
             </Grid.Column>
-            <Grid.Column width={8}></Grid.Column>
+            <Grid.Column width={11}>
+              <Rightbar />
+            </Grid.Column>
           </Grid>
         </Container>
       </div>

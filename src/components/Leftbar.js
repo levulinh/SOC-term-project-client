@@ -1,19 +1,24 @@
 import React, { Component, Fragment } from "react";
 
-import { Card, Icon, Image, Placeholder } from "semantic-ui-react";
+import { Card, Icon, Image, Placeholder, Message } from "semantic-ui-react";
 import { getLocalUserInfo } from "../utils";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 export const CURRENT_QUERY = gql`
   query user($email: String!) {
-    user(email: $email) {
-      name
+    userEntry(email: $email) {
       email
-      id
-      username
       gender
       moto
+      name
+      username
+      followings {
+        count
+      }
+      followers {
+        count
+      }
     }
   }
 `;
@@ -26,16 +31,16 @@ class Leftbar extends Component {
       <Query query={CURRENT_QUERY} variables={{ email: localInfo.email }}>
         {({ loading, error, data }) => {
           let user;
-          if (!loading && data) user = data.user;
+          if (!loading && data) user = data.userEntry;
           return (
-            <Card>
+            <Card fluid>
               {loading ? (
                 <Placeholder>
                   <Placeholder.Image square />
                 </Placeholder>
               ) : (
-                <Image src={user.gender === "MALE" ? "man.png" : "woman.png"} />
-              )}
+                  <Image src={user.gender === "MALE" ? "man.png" : "woman.png"} />
+                )}
               <Card.Content>
                 {loading ? (
                   <Placeholder>
@@ -48,21 +53,30 @@ class Leftbar extends Component {
                     </Placeholder.Paragraph>
                   </Placeholder>
                 ) : (
-                  <Fragment>
-                    <Card.Header>
-                      {user.gender === "MALE" ? (
-                        <Icon name="man" color="blue" />
-                      ) : (
-                        <Icon name="woman" color="pink" />
-                      )}
-                      {user.name}
-                    </Card.Header>
-                    <Card.Meta>
-                      <span className="date">{user.gender}</span>
-                    </Card.Meta>
-                    <Card.Description>{user.moto}</Card.Description>
-                  </Fragment>
-                )}
+                    <Fragment>
+                      <Card.Header>
+                        {user.gender === "MALE" ? (
+                          <Icon name="man" color="blue" />
+                        ) : (
+                            <Icon name="woman" color="pink" />
+                          )}
+                        {user.name}
+                      </Card.Header>
+                      <Card.Meta>
+                        <a href='/#'>
+                          <Icon name="at" />
+                          {user.username}
+                        </a>
+                      </Card.Meta>
+
+                      <Card.Description>
+                        <Message info>
+                          <Message.Header>About me</Message.Header>
+                          <Message.Content>{user.moto}</Message.Content>
+                        </Message>
+                      </Card.Description>
+                    </Fragment>
+                  )}
               </Card.Content>
               <Card.Content extra>
                 {loading ? (
@@ -70,11 +84,7 @@ class Leftbar extends Component {
                     <Placeholder.Line length="short" />
                   </Placeholder>
                 ) : (
-                  <a href='/#'>
-                    <Icon name="at" />
-                    {user.username}
-                  </a>
-                )}
+                    <p><b>{user.followers.count}</b> Followers - <b>{user.followings.count}</b> Follows</p>)}
               </Card.Content>
             </Card>
           );

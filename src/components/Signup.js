@@ -109,6 +109,7 @@ class SignupForm extends Component {
                   fluid
                   icon="at"
                   iconPosition="left"
+                  maxLength={50}
                   placeholder="Username"
                   onChange={e => this.setState({ username: e.target.value })}
                 />
@@ -132,7 +133,7 @@ class SignupForm extends Component {
                   rows={3}
                   placeholder="Tell us more about yourself"
                   onChange={e => this.setState({ moto: e.target.value })}
-                  maxLength={100}
+                  maxLength={150}
                   style={{ marginBottom: 20 }}
                 />
 

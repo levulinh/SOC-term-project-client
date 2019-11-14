@@ -4,11 +4,9 @@ import {
   Icon,
   Header,
   Container,
-  Dropdown,
-  Button
+  Dropdown
 } from "semantic-ui-react";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
 import { AUTH_TOKEN, USER_INFO } from "../constants";
 import { getLocalUserInfo } from "../utils";
 import SearchUser from "./SearchUser";
@@ -24,28 +22,23 @@ class HeaderMenu extends Component {
       <Menu borderless>
         <Container>
           <Menu.Item>
-            <Link to="/">
-              <Header color="blue" size="large">
-                <Icon name="fire" />
+            <a href="/">
+              <Header color="orange" size="large">
+                <Icon name="hashtag" />
                 <Header.Content>Friends</Header.Content>
               </Header>
-            </Link>
-          </Menu.Item>
-
-          <Menu.Item>
-            <SearchUser />
+            </a>
           </Menu.Item>
 
           <Menu.Menu position="right">
             <Menu.Item>
-              <Button.Group color="blue">
-                <Button color="blue" basic={!this.props.feed}>
-                  Feed
-                </Button>
-                <Button color="blue" basic={this.props.feed}>
-                  Message
-                </Button>
-              </Button.Group>
+              <SearchUser />
+            </Menu.Item>
+            <Menu.Item link active={this.props.feed}>
+              <Icon name="hashtag" /> Feed
+            </Menu.Item>
+            <Menu.Item link active={!this.props.feed}>
+              <Icon name="at" /> Mention me
             </Menu.Item>
             <Dropdown item text={<b>{getLocalUserInfo().name}</b>}>
               <Dropdown.Menu>

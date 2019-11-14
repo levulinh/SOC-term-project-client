@@ -1,47 +1,57 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-import { Header, Image, Segment, Form } from 'semantic-ui-react';
+import { POST_MUTATION } from '../graph'
+import { Segment, Form, Icon, Label, Divider, Progress } from 'semantic-ui-react';
 
-const POST_MUTATION = gql`
-  mutation post($content: String!){
-    post(content: $content) {
-      id
-      postedBy {
-        id
-        username
-        gender
-      }
-      content
-      createdAt
-      loves {
-        id
-      }
-      comments {
-        id
-      }
-    }
-  }
-`
+
 
 class PostThought extends Component {
-  state = { content: '' };
+  state = { content: '', loading: false };
   render() {
     return (
       <Mutation mutation={POST_MUTATION}
         variables={{ content: this.state.content }}
-        onCompleted={(data) => this.setState({ content: '' })}
+        onCompleted={() => this.setState({ content: '', loading: false })}
+        update={(store, { data: { post } }) => {
+          this.props.updateFeedAfterPost(store, post)
+          this.props.parent.setState({ latest: post.id })
+        }}
       >
         {postMuation => {
-          return (<Segment>
-            <Header as="h5"><Image circular src="man-sm.png" /> Tell your followers what you're thinking</Header>
+          return (<Segment raised>
+            <Label color="red" ribbon><Icon name="write" /> Tell your followers what you're thinking</Label>
+            <Divider hidden />
             <Form>
-              <Form.TextArea maxlength={300} placeholder="What's in your head?" onChange={e => this.setState({ content: e.target.value })} value={this.state.content} />
-              <Form.Button color="blue" icon="send" content="POST" labelPosition="left" onClick={postMuation} /> Remaining characters: {300 - this.state.content.length}
+              <Progress size='tiny' percent={(this.state.content.length / 300) * 100} attached="top" color="orange" />
+              <Form.TextArea
+                attached="bottom"
+                disabled={this.state.loading}
+                maxLength={300}
+                rows={4}
+                placeholder="What's in your head?"
+                onChange={e => this.setState({ content: e.target.value })}
+                value={this.state.content}
+              />
+
+              <Form.Button
+                color="orange"
+                icon="send"
+                content="POST"
+                labelPosition="left"
+                disabled={this.state.loading}
+                onClick={() => this.handleOnSubmit(postMuation)} />
+
+
             </Form>
           </Segment>);
         }}
       </Mutation>);
+  }
+
+  handleOnSubmit = (postMuation) => {
+    if (this.state.content === '') return null;
+    this.setState({ loading: true })
+    postMuation()
   }
 }
 

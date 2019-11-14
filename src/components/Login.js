@@ -10,27 +10,10 @@ import {
 } from "semantic-ui-react";
 import { AUTH_TOKEN, USER_INFO } from "../constants";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
 import { Link } from "react-router-dom";
-import { CURRENT_QUERY } from "./Leftbar";
+import { CURRENT_QUERY, LOGIN_MUTATION } from "../graph";
 
 import "../styles/Login.css";
-
-const LOGIN_MUTATION = gql`
-  mutation LoginMutaion($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-      user {
-        id
-        email
-        name
-        username
-        gender
-        moto
-      }
-    }
-  }
-`;
 
 class LoginForm extends Component {
   state = {
@@ -51,7 +34,7 @@ class LoginForm extends Component {
         <Grid.Column style={{ maxWidth: 600 }}>
           <Segment.Group raised>
             <Segment textAlign="center">
-              <Icon circular inverted color="blue" name="fire" size="large" />
+              <Icon circular inverted color="orange" name="hashtag" size="large" />
               <Header
                 as="h2"
                 textAlign="center"
@@ -93,7 +76,7 @@ class LoginForm extends Component {
                       icon
                       labelPosition="left"
                       size="large"
-                      color="blue"
+                      color="orange"
                       onClick={mutation}
                     >
                       <Icon name="send" />

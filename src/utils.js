@@ -1,3 +1,5 @@
+import React from 'react';
+import { Markup } from 'interweave';
 import { AUTH_TOKEN, USER_INFO } from "./constants";
 
 function timeDifference(current, previous) {
@@ -45,4 +47,17 @@ function getLocalUserInfo() {
   return JSON.parse(userString);
 }
 
-export { timeDifferenceForDate, isAuthenticated, getLocalUserInfo };
+function renderContentText(content) {
+  let newContent = content;
+  let pattern = /\B@[a-z0-9_-]+/gi;
+  const mentions = content.match(pattern);
+  if (mentions == null) return content;
+  mentions.forEach(m => {
+    newContent = newContent.replace(new RegExp(m, 'g'), `<a href="/u/${m.substring(1)}">${m}</a>`)
+  })
+
+  return <Markup content={newContent} />;
+}
+
+
+export { timeDifferenceForDate, isAuthenticated, getLocalUserInfo, renderContentText };

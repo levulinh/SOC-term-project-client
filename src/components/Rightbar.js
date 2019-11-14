@@ -1,61 +1,19 @@
-import React, { Component, Fragment } from 'react';
-import { Segment, Feed } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import _ from 'lodash';
+import { Segment, Icon, Label } from 'semantic-ui-react';
 
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
-
-import FeedPost from './FeedPost';
-import PostThought from './PostThought';
-
-const FEED_QUERY = gql`
-  query getFeed($orderBy: ThoughtOrderByInput) {
-    getFeed(orderBy: $orderBy)
-    {
-      count
-      thoughts {
-        postedBy {
-          id
-          username
-          gender
-        }
-        id
-        content
-        createdAt
-        loves {
-          id
-        }
-        comments {
-          id
-        }
-      }
-    }
-  }
-`
+const trendings = ['Test', 'Friends', 'Rosh', 'Rachel', 'Monica', 'Chandler', 'Joey', 'Phoebe']
 
 class Rightbar extends Component {
   render() {
-    return (<Query query={FEED_QUERY} variables={{ orderBy: "createdAt_DESC" }}>
-      {
-        ({ loading, error, data }) => {
-          if (loading) return <Segment><p>Loading...</p></Segment>;
-          if (error) return <Segment><p>Some problems occurred!</p></Segment>;
-
-          return (
-            <Fragment>
-              <PostThought />
-              <Segment>
-                <Feed>
-                  {data.getFeed.thoughts.map(
-                    post => <FeedPost key={post.id} post={post} />
-                  )}
-                </Feed>
-              </Segment>
-            </Fragment>)
-        }
-      }
-    </Query>)
+    return (
+      <Segment raised>
+        {/* <Header as="h4" color="grey"><Icon name="hashtag" />Trending now</Header> */}
+        <Label color="orange" ribbon><Icon name="hashtag" />Trending now</Label>
+        {_.map(trendings, (t, i) => <div key={i} style={{ marginTop: 10 }}><Label as="a" href="/#" color="teal">{i + 1}<Label.Detail>#{t}</Label.Detail></Label><br /></div>)}
+      </Segment>
+    )
   }
-
 }
 
 export default Rightbar;

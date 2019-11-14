@@ -12,40 +12,11 @@ import {
 } from "semantic-ui-react";
 import { AUTH_TOKEN, USER_INFO } from "../constants";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
 import { Link } from "react-router-dom";
 
+import { SIGNUP_MUTATION } from '../graph'
 import "../styles/Login.css";
 
-const SIGNUP_MUTATION = gql`
-  mutation SignupMutaion(
-    $email: String!
-    $password: String!
-    $name: String!
-    $username: String!
-    $gender: Gender
-    $moto: String
-  ) {
-    signup(
-      email: $email
-      password: $password
-      name: $name
-      username: $username
-      gender: $gender
-      moto: $moto
-    ) {
-      user {
-        id
-        name
-        username
-        email
-        gender
-        moto
-      }
-      token
-    }
-  }
-`;
 
 const Gender = {
   MALE: "MALE",
@@ -79,7 +50,7 @@ class SignupForm extends Component {
         <Grid.Column style={{ maxWidth: 600 }}>
           <Segment.Group raised>
             <Segment textAlign="center">
-              <Icon circular inverted color="blue" name="fire" size="large" />
+              <Icon circular inverted color="orange" name="hashtag" size="large" />
               <Header
                 as="h2"
                 textAlign="center"
@@ -128,7 +99,7 @@ class SignupForm extends Component {
                   placeholder="Your gender"
                   selection
                 />
-                <p>Remaining characters: {100 - this.state.moto.length}</p>
+                <p>Remaining characters: {150 - this.state.moto.length}</p>
                 <TextArea
                   rows={3}
                   placeholder="Tell us more about yourself"
@@ -148,7 +119,7 @@ class SignupForm extends Component {
                       icon
                       labelPosition="left"
                       size="large"
-                      color="blue"
+                      color="orange"
                       onClick={mutation}
                     >
                       <Icon name="send" />

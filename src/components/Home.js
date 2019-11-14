@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 
 import HeaderMenu from "./Header";
-import { Container, Grid, Sticky } from "semantic-ui-react";
+import { Container, Grid } from "semantic-ui-react";
 import Leftbar from "./Leftbar";
-import Rightbar from "./Rightbar";
+import Centerbar from "./Centerbar";
+import Rightbar from './Rightbar';
 
 class Home extends Component {
+  componentDidMount() {
+    document.title = "Friends"
+  }
+
   render() {
     return (
       <div>
@@ -13,11 +18,12 @@ class Home extends Component {
         <Container>
           <Grid columns='equal'>
             <Grid.Column width={4}>
-              <Sticky>
-                <Leftbar />
-              </Sticky>
+              <Leftbar />
             </Grid.Column>
-            <Grid.Column width={12}>
+            <Grid.Column width={8}>
+              <Centerbar />
+            </Grid.Column>
+            <Grid.Column width={4}>
               <Rightbar />
             </Grid.Column>
           </Grid>

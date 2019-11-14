@@ -1,27 +1,16 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import _ from "lodash";
-import { Search } from "semantic-ui-react";
-import gql from "graphql-tag";
+import { Search, Label } from "semantic-ui-react";
+import { SEARCH_QUERY } from '../graph'
 import { withApollo } from "react-apollo";
+import { withRouter } from 'react-router'
 
-const SEARCH_QUERY = gql`
-  query UserSearch($filter: String, $first: Int) {
-    users(filter: $filter, first: $first) {
-      count
-      users {
-        id
-        name
-        email
-      }
-    }
-  }
-`;
-
-const resultRenderer = ({ name }) => <b>{name}</b>;
+const resultRenderer = ({ name, username }) => <div><b>{name}</b><br /><Label color="grey">@{username}</Label></div>;
 
 resultRenderer.propTypes = {
   name: PropTypes.string,
+  username: PropTypes.string,
   email: PropTypes.string
 };
 
@@ -30,7 +19,7 @@ const initialState = { isLoading: false, results: [], value: "" };
 class SearchExampleStandard extends Component {
   state = initialState;
 
-  handleResultSelect = (e, { result }) => this.setState({ value: result.name });
+  handleResultSelect = (e, { result }) => this.props.history.push(`/u/${result.username}`);
 
   handleSearchChange = async (e, { value }) => {
     this.setState({ isLoading: true, value });
@@ -51,7 +40,6 @@ class SearchExampleStandard extends Component {
 
   render() {
     const { isLoading, value, results } = this.state;
-
     return (
       <Search
         loading={isLoading}
@@ -71,4 +59,4 @@ class SearchExampleStandard extends Component {
   }
 }
 
-export default withApollo(SearchExampleStandard);
+export default withApollo(withRouter(SearchExampleStandard));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Feed, Icon } from 'semantic-ui-react';
+import { Feed, Icon, Label } from 'semantic-ui-react';
 import { timeDifferenceForDate, getLocalUserInfo, renderContentText } from '../utils';
 
 import { Mutation } from 'react-apollo';
@@ -10,7 +10,7 @@ class FeedPost extends Component {
   state = { justliked: [], justunliked: [] }
 
   render() {
-    const { postedBy, content, createdAt, loves, comments, id } = this.props.post;
+    const { postedBy, news, content, createdAt, loves, comments, id } = this.props.post;
     const user = postedBy;
     const userId = getLocalUserInfo().id;
     return (
@@ -25,6 +25,7 @@ class FeedPost extends Component {
           </Feed.Summary>
           <Feed.Extra text>
             {renderContentText(content)}
+            <br /><a href="/"><b>{`#${news}`}</b></a>
           </Feed.Extra>
           <Feed.Meta>
             {this.renderLoveButton(loves, userId, id)}

@@ -22,11 +22,11 @@ class PostThought extends Component {
             <Label color="red" ribbon><Icon name="write" /> Tell your followers what you're thinking</Label>
             <Divider hidden />
             <Form>
-              <Progress size='tiny' percent={(this.state.content.length / 300) * 100} attached="top" color="orange" />
+              <Progress size='tiny' percent={(this.state.content.length / 500) * 100} attached="top" color="orange" />
               <Form.TextArea
                 attached="bottom"
                 disabled={this.state.loading}
-                maxLength={300}
+                maxLength={500}
                 rows={4}
                 placeholder="What's in your head?"
                 onChange={e => this.setState({ content: e.target.value })}

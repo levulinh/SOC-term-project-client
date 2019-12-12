@@ -31,6 +31,7 @@ export const GETPOST_QUERY = gql`
       id
       content
       createdAt
+      news
       postedBy {
         id
         name
@@ -71,6 +72,7 @@ export const FEED_QUERY = gql`
         }
         id
         content
+        news
         createdAt
         loves {
           id
@@ -98,6 +100,7 @@ export const TIMELINE_QUERY = gql`
         }
         id
         content
+        news
         createdAt
         loves {
           id
@@ -223,6 +226,7 @@ export const POST_MUTATION = gql`
         id
         content
         createdAt
+        news
         loves {
           id
           user {

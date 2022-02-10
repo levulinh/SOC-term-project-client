@@ -10,7 +10,7 @@
     "faker": "^4.1.0",
     "graphql": "^14.5.8",
     "interweave": "^12.1.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-apollo": "^3.1.3",
